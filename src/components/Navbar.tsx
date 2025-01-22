@@ -6,7 +6,7 @@ export default async function Navbar() {
   const session = await auth();
 
   return (
-    <header className="px-5 py-3 bg-white shadow-sm font-work-sans">
+    <header className="px-5 py-3 bg-white shadow-sm font-work-sans font-medium">
       <nav className="flex justify-between items-center">
         <Link href="/">
           <Image src="/logo.png" alt="Logo" width={144} height={30} />
@@ -26,7 +26,7 @@ export default async function Navbar() {
                 <button type="submit">Logout</button>
               </form>
 
-              <Link href={`/user/${session?.id}`}>
+              <Link href={`/user/${session?.user?.id}`}>
                 <span>{session?.user?.name}</span>
               </Link>
             </>

@@ -5,17 +5,18 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import MDEditor from "@uiw/react-md-editor";
 import { Button } from "./ui/button";
-import { Send } from "lucide-react";
+import { Hourglass, Send } from "lucide-react";
 import { formSchema } from "@/lib/validation";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
+import { createIdea } from "@/lib/actions";
+import { useRouter } from "next/navigation";
 
 export default function StartupForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
-
   const [pitch, setPitch] = useState("");
-
   const { toast } = useToast();
+  const router = useRouter();
 
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
     try {
@@ -31,20 +32,18 @@ export default function StartupForm() {
 
       console.log(formValues);
 
-      //   const result = await createIdea(prevState.formData, pitch);
+      const result = await createIdea(prevState, formData, pitch);
 
-      //   if(result === 'SUCCESS') {
+      if (result.status === "SUCCESS") {
+        toast({
+          title: "Success",
+          description: "Your startup pitch has been created successfully.",
+        });
 
-      //     toast({
-      //         title: "Success",
-      //         description:
-      //           "Your startup pitch has been created successfully.",
-      //       });
+        router.push(`/startup/${result._id}`);
+      }
 
-      //       router.push(`/startup/${result.id}`)
-      //   }
-
-      //   return result
+      return result;
     } catch (error) {
       if (error instanceof z.ZodError) {
         const fieldErrors = error.flatten().fieldErrors;
@@ -175,8 +174,17 @@ export default function StartupForm() {
         className="startup-form_btn text-white"
         disabled={isPending}
       >
-        {isPending ? "Creating..." : "Create New Startup"}
-        <Send className="size-6 ml-2" />
+        {isPending ? (
+          <>
+            Creating...
+            <Hourglass className="animate-spin !size-6 ml-2" />
+          </>
+        ) : (
+          <>
+            Create New Startup
+            <Send className="!size-6 ml-2" />
+          </>
+        )}
       </Button>
     </form>
   );

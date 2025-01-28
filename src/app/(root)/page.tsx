@@ -16,8 +16,6 @@ export default async function Home({
     params,
   });
 
-  // console.log(JSON.stringify(posts, null, 2));
-
   return (
     <>
       <section className="pink_container">

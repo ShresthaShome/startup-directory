@@ -10,7 +10,13 @@ export default async function View({ id }: { id: string }) {
       .withConfig({ useCdn: false })
       .fetch(STARTUP_VIEWS_QUERY, { id })) || 0;
 
-  after(async () => await writeClient.patch(id).inc({ views: 1 }).commit());
+  after(
+    async () =>
+      await writeClient
+        .patch(id)
+        .set({ views: (views || 0) + 1 })
+        .commit()
+  );
 
   return (
     <div className="view-container">

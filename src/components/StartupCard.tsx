@@ -23,10 +23,12 @@ export default function StartupCard({ post }: { post: StartupCardType }) {
     <li className="startup-card group">
       <div className="flex-between">
         <p className="startup-card_date">{formatDate(_createdAt)}</p>
-        <div className="flex gap-1.5">
-          <EyeIcon className="size-6 text-primary" />
-          <span className="text-16-medium">{views}</span>
-        </div>
+        {(views && (
+          <div className="flex gap-1.5">
+            <EyeIcon className="size-6 text-primary" />
+            <span className="text-16-medium">{views}</span>
+          </div>
+        )) || <b className="text-black mr-1">NEW</b>}
       </div>
 
       <div className="flex-between mt-5 gap-5">
@@ -40,7 +42,7 @@ export default function StartupCard({ post }: { post: StartupCardType }) {
         </div>
         <Link href={`/user/${author?._id}`}>
           <Image
-            src="https://placehold.co/48x48"
+            src={(author?.image as string) || "https://placehold.co/48x48"}
             width={40}
             height={40}
             alt="placeholder"

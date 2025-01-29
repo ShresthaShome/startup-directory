@@ -17,6 +17,7 @@ export default function StartupForm() {
   const [pitch, setPitch] = useState("");
   const { toast } = useToast();
   const router = useRouter();
+  const [fetcher, setFetcher] = useState<Record<string, string>>({});
 
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
     try {
@@ -28,13 +29,17 @@ export default function StartupForm() {
         pitch,
       };
 
+      setFetcher(formValues);
+
       await formSchema.parseAsync(formValues);
 
-      console.log(formValues);
+      // console.log(formValues);
 
       const result = await createIdea(prevState, formData, pitch);
 
       if (result.status === "SUCCESS") {
+        setFetcher({});
+
         toast({
           title: "Success",
           description: "Your startup pitch has been created successfully.",
@@ -91,6 +96,8 @@ export default function StartupForm() {
           className="startup-form_input"
           required
           placeholder="Add Startup Title"
+          value={fetcher.title || ""}
+          onChange={(e) => setFetcher({ ...fetcher, title: e.target.value })}
         />
 
         {errors.title && <p className="startup-form_error">{errors.title}</p>}
@@ -106,6 +113,10 @@ export default function StartupForm() {
           className="startup-form_textarea"
           required
           placeholder="Add Description"
+          value={fetcher.description || ""}
+          onChange={(e) =>
+            setFetcher({ ...fetcher, description: e.target.value })
+          }
         />
 
         {errors.description && (
@@ -123,6 +134,8 @@ export default function StartupForm() {
           className="startup-form_input"
           required
           placeholder="Ex. Tech / Health / Education..."
+          value={fetcher.category || ""}
+          onChange={(e) => setFetcher({ ...fetcher, category: e.target.value })}
         />
 
         {errors.category && (
@@ -140,6 +153,8 @@ export default function StartupForm() {
           className="startup-form_input"
           required
           placeholder="Add Image URL [Ex.: https://example.com/image.jpg]"
+          value={fetcher.link || ""}
+          onChange={(e) => setFetcher({ ...fetcher, link: e.target.value })}
         />
 
         {errors.link && <p className="startup-form_error">{errors.link}</p>}

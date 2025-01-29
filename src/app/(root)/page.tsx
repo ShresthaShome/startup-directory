@@ -1,5 +1,6 @@
 import SearchForm from "@/components/SearchForm";
 import StartupCard, { StartupCardType } from "@/components/StartupCard";
+import { client } from "@/sanity/lib/client";
 import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 
@@ -11,10 +12,16 @@ export default async function Home({
   const query = (await searchParams).query;
   const params = { search: query || null };
 
-  const { data: posts } = await sanityFetch<any>({
-    query: STARTUPS_QUERY,
-    params,
-  });
+  const [{ data }, fallbackData] = await Promise.all([
+    sanityFetch<any>({
+      query: STARTUPS_QUERY,
+      params,
+    }),
+    client.withConfig({ useCdn: false }).fetch(STARTUPS_QUERY, params),
+  ]);
+
+  const posts: StartupCardType[] =
+    fallbackData.length > data.length ? fallbackData : data;
 
   return (
     <>

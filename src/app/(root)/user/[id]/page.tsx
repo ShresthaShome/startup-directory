@@ -4,7 +4,7 @@ import UserStartups from "@/components/UserStartups";
 import { client } from "@/sanity/lib/client";
 import { AUTHOR_BY_ID_QUERY } from "@/sanity/lib/queries";
 import Image from "next/image";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 export default async function UserId({
@@ -14,7 +14,6 @@ export default async function UserId({
 }) {
   const { id } = await params;
   const session: any = await auth();
-  //if (!session) redirect("/");
 
   const user = await client.fetch(AUTHOR_BY_ID_QUERY, { id });
   if (!user) return notFound();

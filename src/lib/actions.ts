@@ -35,10 +35,7 @@ export const createIdea = async (
       },
       author: {
         _type: "reference",
-        _ref: (() => {
-          const sessionWithId = session as Session & { id: string };
-          return sessionWithId?.id;
-        })(), // ensured type management
+        _ref: session.user?.id,
       },
     };
 

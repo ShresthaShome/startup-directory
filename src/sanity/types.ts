@@ -125,6 +125,23 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
+export type Playlist = {
+  _id: string;
+  _type: "playlist";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  select?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "startup";
+  }>;
+};
+
 export type Startup = {
   _id: string;
   _type: "startup";
@@ -168,12 +185,21 @@ export type Author = {
 
 export type Markdown = string;
 
-export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | SanityAssetSourceData | Startup | Slug | Author | Markdown;
+export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | SanityAssetSourceData | Playlist | Startup | Slug | Author | Markdown;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: STARTUPS_QUERY
 // Query: *[_type == "startup" && defined(slug.current) && !defined($search) || title match $search || category match $search || author -> name match $search] | order(_createdAt desc) {    _id,    title,    _createdAt,    author -> {        _id,        name,        image,    },    views,    description,    category,    image  }
 export type STARTUPS_QUERYResult = Array<{
+  _id: string;
+  title: string | null;
+  _createdAt: string;
+  author: null;
+  views: null;
+  description: null;
+  category: null;
+  image: null;
+} | {
   _id: string;
   title: null;
   _createdAt: string;

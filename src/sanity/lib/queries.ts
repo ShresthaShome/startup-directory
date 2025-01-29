@@ -6,9 +6,9 @@ export const STARTUPS_QUERY = defineQuery(
     title,
     _createdAt,
     author -> {
-        _id,
-        name,
-        image,
+      _id,
+      name,
+      image,
     },
     views,
     description,
@@ -24,17 +24,17 @@ export const STARTUP_BY_ID_QUERY = defineQuery(
     slug,
     _createdAt,
     author -> {
-        _id,
-        name,
+      _id,
+      name,
       username,
-        image,
-        bio
+      image,
+      bio
     },
     views,
     description,
     category,
     image,
-      pitch,
+    pitch,
   }`
 );
 
@@ -58,13 +58,13 @@ export const AUTHOR_BY_GITHUB_ID_QUERY = defineQuery(
 
 export const AUTHOR_BY_ID_QUERY = defineQuery(`
   *[_type == "author" && _id == $id][0]{
-  _id,
-  id,
-  name,
-  username,
-  email,
-  image,
-  bio
+    _id,
+    id,
+    name,
+    username,
+    email,
+    image,
+    bio
   }`);
 
 export const STARTUPS_BY_AUTHOR_QUERY = defineQuery(
@@ -73,13 +73,39 @@ export const STARTUPS_BY_AUTHOR_QUERY = defineQuery(
     title,
     _createdAt,
     author -> {
-        _id,
-        name,
-        image,
+      _id,
+      name,
+       image,
     },
     views,
     description,
     category,
     image
+  }`
+);
+
+export const PLAYLIST_BY_SLUG_QUERY = defineQuery(
+  `*[_type == "playlist" && slug.current == $slug][0]{
+    _id,
+    title,
+    slug,
+    select[] -> {
+      _id,
+      _createdAt,
+      title,
+      slug,
+      author -> {
+        _id,
+        name,
+        slug,
+        image,
+        bio
+      },
+      views,
+      description,
+      category,
+      image,
+      pitch
+    }
   }`
 );

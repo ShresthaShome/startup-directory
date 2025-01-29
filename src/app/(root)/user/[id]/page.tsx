@@ -30,8 +30,8 @@ export default async function UserId({
           </div>
 
           <Image
-            src={user?.image}
-            alt={user?.name}
+            src={user?.image || "https://placehold.co/220x220"}
+            alt={user?.name || "placeholder"}
             width={220}
             height={220}
             className="profile_image"
